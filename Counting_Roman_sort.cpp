@@ -35,6 +35,27 @@ int main(int argc, const char* argv[]) {
 
 	if (argv[1][0] == '0') {
 		//counting sort
+        int minValue = *min_element(A.begin(), A.end());
+        int maxValue = *max_element(A.begin(), A.end());
+        for (int i = 0; i < A.size(); i++) {
+        	A[i] = A[i] - minValue;
+        }
+        int sizeC = maxValue - minValue + 1;
+        int* C = new int[sizeC]();
+        for (int i : A) {
+        	C[i]++;
+        }
+        for (int i = 1; i < sizeC; i++) {
+        	C[i] += C[i - 1];
+        }
+        vector<int> B(A.size(), 0);
+        for (int i = A.size() - 1; i >= 0; i--) {
+        	B[C[A[i]] - 1] = A[i];
+        	C[A[i]]--;
+        }
+        A = B;
+        cout << "A is " << (is_sorted(A.begin(), A.end()) ? "sorted" : "not sorted") << endl;
+            
 	}
 	else {
 		//Roman sort
