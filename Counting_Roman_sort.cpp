@@ -50,7 +50,7 @@ int main(int argc, const char* argv[]) {
         }
         vector<int> B(A.size(), 0);
         for (int i = A.size() - 1; i >= 0; i--) {
-        	B[C[A[i]] - 1] = A[i];
+        	B[C[A[i]] - 1] = A[i] + minValue;
         	C[A[i]]--;
         }
         A = B;
