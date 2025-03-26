@@ -59,6 +59,17 @@ int main(int argc, const char* argv[]) {
 	}
 	else {
 		//Roman sort
+        int minValue = *min_element(A.begin(), A.end());
+        int maxValue = *max_element(A.begin(), A.end());
+        for (int i = 0; i < A.size(); i++) {
+        	A[i] = A[i] - minValue;
+        }
+        int sizeC = maxValue - minValue + 1;
+        int* C = new int[sizeC]();
+        for (int i : A) {
+        	C[i]++;
+        }
+        
 	}
 	
 	Izpis_Stevil(&A[0], A.size());
