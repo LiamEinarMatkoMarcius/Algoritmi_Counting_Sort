@@ -69,7 +69,15 @@ int main(int argc, const char* argv[]) {
         for (int i : A) {
         	C[i]++;
         }
-        
+        vector<int> B;
+        for (int i = 0; i < sizeC; i++) {
+        	if (C[i] == 0) continue;
+        	for (int j = 0; j < C[i]; j++) {
+        		B.push_back(i + minValue);
+        	}
+        }
+        A = B;
+        cout << "A is " << (is_sorted(A.begin(), A.end()) ? "sorted" : "not sorted") << endl;        
 	}
 	
 	Izpis_Stevil(&A[0], A.size());
