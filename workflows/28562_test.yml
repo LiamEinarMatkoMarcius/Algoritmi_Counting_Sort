@@ -1,60 +1,43 @@
-name: Test Project
+name: Run Tests
 
 on:
   push:
-    branches: [main]
+    branches:
+      - main
 
 jobs:
   check-tests:
-    runs-on: self-hosted
-    outputs:
-      tests_exist: ${{ steps.check.outputs.found }}
+    runs-on: self-hosted  # Use your self-hosted runner here
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
+      - name: Checkout repository
+        uses: actions/checkout@v2
 
-      - name: Check if test file exists
-        id: check
-        run: |
-          if [ -f "tests/test_sorting.py" ]; then
-            echo "found=true" >> $GITHUB_OUTPUT
-            echo "Test file exists" > napaka.txt
-          else
-            echo "found=false" >> $GITHUB_OUTPUT
-            echo "Test file NOT found!" > napaka.txt
-          fi
-
-      - name: Upload napaka.txt
-        uses: actions/upload-artifact@v3
+      - name: Set up Python for testing
+        uses: actions/setup-python@v2
         with:
-          name: napaka
-          path: napaka.txt
-
-  run-tests:
-    needs: check-tests
-    runs-on: self-hosted
-    if: needs.check-tests.outputs.tests_exist == 'true'
-
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-
-      - name: Download napaka.txt
-        uses: actions/download-artifact@v3
-        with:
-          name: napaka
-
-      - name: Display napaka.txt content
-        run: cat napaka.txt
+          python-version: '3.x'
 
       - name: Install dependencies
         run: |
-          sudo apt-get update
-          sudo apt-get install -y python3 python3-pip
-          pip3 install pytest
-
-      - name: Compile C++ code
-        run: g++ -std=c++17 -o your_program main.cpp
+          pip install -r requirements.txt
 
       - name: Run tests
-        run: pytest tests/
+        run: |
+          python -m unittest discover tests
+        continue-on-error: false
+
+  prepare-env:
+    runs-on: self-hosted  # Use your self-hosted runner here
+    needs: check-tests
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set up environment for tests
+        run: |
+          # Add setup commands for testing (like compiling C++ code if needed)
+          ./setup-test-environment.sh
+          
+      - name: Run tests
+        run: |
+          ./run-tests.sh  # Assuming you have a script to run tests
