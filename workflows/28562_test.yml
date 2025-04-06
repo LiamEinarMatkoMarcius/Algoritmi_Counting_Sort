@@ -1,0 +1,60 @@
+name: Test Project
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  check-tests:
+    runs-on: self-hosted
+    outputs:
+      tests_exist: ${{ steps.check.outputs.found }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Check if test file exists
+        id: check
+        run: |
+          if [ -f "tests/test_sorting.py" ]; then
+            echo "found=true" >> $GITHUB_OUTPUT
+            echo "Test file exists" > napaka.txt
+          else
+            echo "found=false" >> $GITHUB_OUTPUT
+            echo "Test file NOT found!" > napaka.txt
+          fi
+
+      - name: Upload napaka.txt
+        uses: actions/upload-artifact@v3
+        with:
+          name: napaka
+          path: napaka.txt
+
+  run-tests:
+    needs: check-tests
+    runs-on: self-hosted
+    if: needs.check-tests.outputs.tests_exist == 'true'
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Download napaka.txt
+        uses: actions/download-artifact@v3
+        with:
+          name: napaka
+
+      - name: Display napaka.txt content
+        run: cat napaka.txt
+
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y python3 python3-pip
+          pip3 install pytest
+
+      - name: Compile C++ code
+        run: g++ -std=c++17 -o your_program main.cpp
+
+      - name: Run tests
+        run: pytest tests/

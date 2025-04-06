@@ -1,86 +1,59 @@
-#include <fstream>
 #include <vector>
 #include <iostream>
 #include <algorithm>
+#include <cstdlib>
 using namespace std;
 
-bool Branje_Stevil(vector<int>& vec, const char s[]) {
-	ifstream input(s);
-	int st;
-
-	if (!input.is_open()) {
-		return false;
-	}
-
-	while (!input.eof()) {
-		input >> st;
-		vec.push_back(st);
-		while (isspace(input.peek())) input.get();
-	}
-	input.close();
-	return true;
-}
-
-void Izpis_Stevil(int* polje, unsigned int velikost) {
-	ofstream output("out.txt");
-
-	for (int i = 0; i < velikost; i++)
-		output << polje[i] << ' ';
-}
 int main(int argc, const char* argv[]) {
-	vector<int> A;
+    if (argc < 3) {
+        cerr << "Usage: ./your_program <0|1> <list of integers>" << endl;
+        return 1;
+    }
 
-	if (argc < 3) return 0;
-	if (!Branje_Stevil(A, argv[2])) return 0;
+    vector<int> A;
+    for (int i = 2; i < argc; ++i) {
+        A.push_back(atoi(argv[i]));
+    }
 
-	if (argv[1][0] == '0') {
-		//counting sort
-        int minValue = *min_element(A.begin(), A.end());
-        int maxValue = *max_element(A.begin(), A.end());
-        for (int i = 0; i < A.size(); i++) {
-        	A[i] = A[i] - minValue;
-        }
-        int sizeC = maxValue - minValue + 1;
-        int* C = new int[sizeC]();
-        for (int i : A) {
-        	C[i]++;
-        }
+    int minValue = *min_element(A.begin(), A.end());
+    int maxValue = *max_element(A.begin(), A.end());
+    for (int i = 0; i < A.size(); i++) {
+        A[i] -= minValue;
+    }
+    int sizeC = maxValue - minValue + 1;
+    int* C = new int[sizeC]();
+    for (int i : A) {
+        C[i]++;
+    }
+
+    if (argv[1][0] == '0') {
+        // Counting Sort
         for (int i = 1; i < sizeC; i++) {
-        	C[i] += C[i - 1];
+            C[i] += C[i - 1];
         }
         vector<int> B(A.size(), 0);
         for (int i = A.size() - 1; i >= 0; i--) {
-        	B[C[A[i]] - 1] = A[i] + minValue;
-        	C[A[i]]--;
+            B[C[A[i]] - 1] = A[i] + minValue;
+            C[A[i]]--;
         }
         A = B;
-        cout << "A is " << (is_sorted(A.begin(), A.end()) ? "sorted" : "not sorted") << endl;
-            
-	}
-	else {
-		//Roman sort
-        int minValue = *min_element(A.begin(), A.end());
-        int maxValue = *max_element(A.begin(), A.end());
-        for (int i = 0; i < A.size(); i++) {
-        	A[i] = A[i] - minValue;
-        }
-        int sizeC = maxValue - minValue + 1;
-        int* C = new int[sizeC]();
-        for (int i : A) {
-        	C[i]++;
-        }
+    } else {
+        // Roman Sort
         vector<int> B;
         for (int i = 0; i < sizeC; i++) {
-        	if (C[i] == 0) continue;
-        	for (int j = 0; j < C[i]; j++) {
-        		B.push_back(i + minValue);
-        	}
+            for (int j = 0; j < C[i]; j++) {
+                B.push_back(i + minValue);
+            }
         }
         A = B;
-        cout << "A is " << (is_sorted(A.begin(), A.end()) ? "sorted" : "not sorted") << endl;        
-	}
-	
-	Izpis_Stevil(&A[0], A.size());
+    }
 
-	return 0;
+    delete[] C;
+
+    for (int x : A) {
+        cout << x << " ";
+    }
+    cout << endl;
+
+    return 0;
 }
