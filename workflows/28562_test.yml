@@ -17,11 +17,13 @@ jobs:
         with:
           python-version: '3.x'
 
-      - name: Install dependencies
+      - name: Compile C++ code
         run: |
-          pip install -r requirements.txt
+          g++ -o counting_sort Counting_roman:sort.cpp
 
-      - name: Run tests
+      - name: Run Python tests
+        env:
+          EXECUTABLE: ./counting_sort
         run: |
           python -m unittest discover tests
         continue-on-error: false
