@@ -12,34 +12,41 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v2
 
-      - name: Set up Python for testing
-        uses: actions/setup-python@v2
+      - name: Check for test scripts
+        run: |
+          if [ ! -f tests/test_sorting.py ]; then
+            echo "Test script not found!" >&2
+            exit 1
+          fi
+        2> napaka.txt
+
+      - name: Upload error log
+        uses: actions/upload-artifact@v3
         with:
-          python-version: '3.x'
-
-      - name: Compile C++ code
-        run: |
-          g++ -o counting_sort Counting_roman:sort.cpp
-
-      - name: Run Python tests
-        env:
-          EXECUTABLE: ./counting_sort
-        run: |
-          python -m unittest discover tests
-        continue-on-error: false
+          name: error-log
+          path: napaka.txt
 
   prepare-env:
     runs-on: self-hosted  # Use your self-hosted runner here
     needs: check-tests
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v2
+      - name: Download error log
+        uses: actions/download-artifact@v3
+        with:
+          name: error-log
+
+      - name: Check error log
+        run: |
+          if [ -s napaka.txt ]; then
+            echo "Errors detected in the first job:"
+            cat napaka.txt
+            exit 1
+          fi
 
       - name: Set up environment for tests
         run: |
-          # Add setup commands for testing (like compiling C++ code if needed)
           ./setup-test-environment.sh
-          
+
       - name: Run tests
         run: |
-          ./run-tests.sh  # Assuming you have a script to run tests
+          ./run-tests.sh
