@@ -9,7 +9,7 @@ int main(int argc, const char* argv[]) {
         cerr << "Usage: ./your_program <0|1> <list of integers>" << endl;
         return 1;
     }
-	//comment test3
+	//comment test4
     vector<int> A;
     for (int i = 2; i < argc; ++i) {
         A.push_back(atoi(argv[i]));
