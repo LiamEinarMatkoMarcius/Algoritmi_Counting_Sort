@@ -5,47 +5,21 @@ on:
     branches: [ master ]
 
 jobs:
-  check-tests:
-    runs-on: self-hosted  # Use your self-hosted runner here
+  # The build job runs on an ubuntu-latest machine
+  build:
+    runs-on: ubuntu-latest
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v2
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v4
 
-      - name: Check for test scripts
+      # Runs a single command using the runners shell
+      - name: Run a one-line script
+        run: echo Hello, world!
+
+      # Runs a set of commands using the runners shell
+      - name: Run a multi-line script
         run: |
-          if [ ! -f tests/test_sorting.py ]; then
-            echo "Test script not found!" >&2
-            exit 1
-          fi
-        2> napaka.txt
-
-      - name: Upload error log
-        uses: actions/upload-artifact@v3
-        with:
-          name: error-log
-          path: napaka.txt
-
-  prepare-env:
-    runs-on: self-hosted  # Use your self-hosted runner here
-    needs: check-tests
-    steps:
-      - name: Download error log
-        uses: actions/download-artifact@v3
-        with:
-          name: error-log
-
-      - name: Check error log
-        run: |
-          if [ -s napaka.txt ]; then
-            echo "Errors detected in the first job:"
-            cat napaka.txt
-            exit 1
-          fi
-
-      - name: Set up environment for tests
-        run: |
-          ./setup-test-environment.sh
-
-      - name: Run tests
-        run: |
-          ./run-tests.sh
+          echo Add other actions to build,
+          echo test, and deploy your project.
