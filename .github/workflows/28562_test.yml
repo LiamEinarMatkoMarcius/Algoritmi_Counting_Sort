@@ -9,7 +9,7 @@ jobs:
     runs-on: self-hosted
     name: Build & Test in Docker
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/upload-artifact@v4
 
       - name: Generate Docker image tag
         id: tag
@@ -28,7 +28,7 @@ jobs:
         run: echo "${{ steps.tag.outputs.tag }}" > image_tag.txt
 
       - name: Upload artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: docker-image-tag
           path: image_tag.txt
