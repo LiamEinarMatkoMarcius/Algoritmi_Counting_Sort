@@ -33,5 +33,5 @@ jobs:
 
       - name: Tag and push image
         run: |
-          docker tag ${{ steps.image.outputs.tag }} ${{ secrets.DOCKERHUB_USERNAME }}/cpp-project:latest
-          docker push ${{ secrets.DOCKERHUB_USERNAME }}/cpp-project:latest
+          docker tag ${{ steps.image.outputs.tag }} ${{ secrets.DOCKERHUB_USERNAME }}/uni:latest
+          docker push ${{ secrets.DOCKERHUB_USERNAME }}/uni:latest
