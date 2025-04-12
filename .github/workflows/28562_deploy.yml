@@ -9,12 +9,11 @@ on:
 jobs:
   deploy:
     if: ${{ github.event.workflow_run.conclusion == 'success' }}
-    runs-on: ${{ matrix.os }}  # Using matrix to run on different operating systems
+    runs-on: self-hosted
     name: Deploy Docker Image
     strategy:
       matrix:
-        os: [ubuntu-latest, windows-latest, macos-latest]  # Matrix for OS
-        tag: [latest, stable]  # Matrix for Docker tags (you can add more tags here if needed)
+        tag: [latest, stable]  # Simple matrix for Docker tags
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -35,7 +34,7 @@ jobs:
       - name: Log in to DockerHub
         run: echo "${{ secrets.DOCKERHUB_TOKEN }}" | docker login -u ${{ secrets.DOCKERHUB_USERNAME }} --password-stdin
 
-      - name: Tag and push image
+      - name: Tag and push image with matrix tag
         run: |
-          docker tag ${{ steps.image.outputs.tag }} ${{ secrets.DOCKERHUB_USERNAME }}/uni:latest
-          docker push ${{ secrets.DOCKERHUB_USERNAME }}/uni:latest
+          docker tag ${{ steps.image.outputs.tag }} ${{ secrets.DOCKERHUB_USERNAME }}/uni:${{ matrix.tag }}  # Tag with matrix value
+          docker push ${{ secrets.DOCKERHUB_USERNAME }}/uni:${{ matrix.tag }}  # Push the image with matrix tag
