@@ -9,8 +9,12 @@ on:
 jobs:
   deploy:
     if: ${{ github.event.workflow_run.conclusion == 'success' }}
-    runs-on: self-hosted
+    runs-on: ${{ matrix.os }}  # Using matrix to run on different operating systems
     name: Deploy Docker Image
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]  # Matrix for OS
+        tag: [latest, stable]  # Matrix for Docker tags (you can add more tags here if needed)
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
