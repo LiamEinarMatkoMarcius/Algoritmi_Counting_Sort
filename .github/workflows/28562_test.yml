@@ -1,4 +1,4 @@
-name: Run Dockerized Tests
+name: Test 
 
 on:
   push:
