@@ -9,7 +9,7 @@ jobs:
     runs-on: self-hosted
     name: Build & Test in Docker
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       - name: Generate Docker image tag
         id: tag
