@@ -19,6 +19,8 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: docker-image-tag
+          run-id: ${{ github.event.workflow_run.id }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Read image tag
         id: image
