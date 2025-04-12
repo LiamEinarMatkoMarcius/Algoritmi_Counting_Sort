@@ -14,7 +14,7 @@ WORKDIR /app
 COPY . .
 
 # Optional: Compile C++ code (update based on how your project is structured)
-RUN g++ -o my_app Counting_Roman_sort.cpp
+RUN g++ -o my_program Counting_Roman_sort.cpp
 
 # Install Python dependencies
 RUN pip install --upgrade pip && \

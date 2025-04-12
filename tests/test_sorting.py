@@ -2,7 +2,7 @@ import subprocess
 import unittest
 
 def run_sorting_test(mode, input_numbers):
-    args = ["./your_program", str(mode)] + list(map(str, input_numbers))
+    args = ["./my_program", str(mode)] + list(map(str, input_numbers))
     result = subprocess.run(args, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
     output = result.stdout.strip()
     if not output:
