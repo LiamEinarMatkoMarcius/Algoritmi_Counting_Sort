@@ -28,8 +28,8 @@ jobs:
           tag=$(cat image_tag.txt)
           echo "tag=$tag" >> $GITHUB_OUTPUT
 
-      run: |
-          echo "${{ secrets.DOCKERHUB_TOKEN }}" | docker login -u "${{ secrets.DOCKERHUB_USERNAME }}" --password-stdin
+      - name: Log in to DockerHub
+        run: echo "${{ secrets.DOCKERHUB_PASSWORD }}" | docker login -u ${{ secrets.DOCKERHUB_USERNAME }} --password-stdin
 
       - name: Tag and push image
         run: |
