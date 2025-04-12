@@ -26,7 +26,7 @@ jobs:
       - uses: actions/upload-artifact@v4
         with: 
           name: my-artifacts
-          path: _work/my-artifacts/image_tag.txt
+          path: image_tag.txt
       - name: Generate Docker image tag
         id: tag
         run: |
@@ -47,4 +47,4 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: docker-image-tag
-          path: _work/my-artifacts/image_tag.txt
+          path: image_tag.txt
