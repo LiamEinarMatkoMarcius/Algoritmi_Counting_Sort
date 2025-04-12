@@ -25,7 +25,7 @@ jobs:
     steps:
       - uses: actions/upload-artifact@v4
         with: 
-          name: my-artifacts
+          name: docker-image-tag
           path: image_tag.txt
       - name: Generate Docker image tag
         id: tag

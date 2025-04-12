@@ -2,7 +2,7 @@ name: Deploy Docker to DockerHub
 
 on:
   workflow_run:
-    workflows: ["28562_test.yml"]
+    workflows: ["Run Dockerized Tests"]
     types:
       - completed
 
