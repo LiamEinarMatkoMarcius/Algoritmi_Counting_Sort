@@ -5,6 +5,20 @@ on:
     branches: [ master ]
 
 jobs:
+  check-tests:
+    runs-on: self-hosted
+    name: Check for Test Scripts
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Verify test scripts exist
+        run: |
+          if [ ! -f tests/test_sorting.py ]; then
+            echo "Test script 'tests/test_sorting.py' not found!"
+            exit 1
+          fi
+          echo "Test script found."
   run-tests:
     runs-on: self-hosted
     name: Build & Test in Docker
