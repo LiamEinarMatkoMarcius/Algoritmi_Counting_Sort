@@ -14,7 +14,7 @@ jobs:
       - name: Download artifact
         uses: actions/download-artifact@v4
         with:
-          name: docker-image-tag 
+          name: my-artifacts
           path: image_tag.txt
 
       - name: Read image tag
