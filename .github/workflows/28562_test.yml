@@ -24,7 +24,9 @@ jobs:
     name: Build & Test in Docker
     steps:
       - uses: actions/upload-artifact@v4
-
+        with: 
+          name: my-artifacts
+          path: _work/my-artifacts/
       - name: Generate Docker image tag
         id: tag
         run: |
