@@ -45,4 +45,4 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: docker-image-tag
-          path: image_tag.txt
+          path: _work/my-artifacts/image_tag.txt
