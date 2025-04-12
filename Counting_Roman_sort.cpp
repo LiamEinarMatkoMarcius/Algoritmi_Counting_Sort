@@ -51,7 +51,7 @@ int main(int argc, const char* argv[]) {
     delete[] C;
 
     for (int x : A) {
-        //cout << x << " ";
+        cout << x << " ";
     }
     cout << endl;
 
